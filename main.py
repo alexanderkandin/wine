@@ -31,7 +31,6 @@ excel_data = pandas.read_excel('wine3.xlsx', na_values=['', 'nan', 'NaN', 'NULL'
 excel_data = excel_data.fillna('')
 wines = excel_data.to_dict(orient='records')
 
-# Группируем вина по категориям
 wines_by_category = collections.defaultdict(list)
 for wine in wines:
     wines_by_category[wine['Категория']].append(wine)
