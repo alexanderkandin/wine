@@ -20,7 +20,7 @@ god = ' год'
 goda = ' года'
 
 now = datetime.datetime.now()
-number = now.year - 1294
+number = now.year - 1920
 if number%100 in range(11,21):
     text = str(number) + let
 elif number%10 == 1:
