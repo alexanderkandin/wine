@@ -1,10 +1,13 @@
+import argparse
+import datetime
+import pandas
+import collections
+
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-import datetime
-import pandas
-import collections
+
 env = Environment(
     loader=FileSystemLoader('.'),
     autoescape=select_autoescape(['html','xml'])
@@ -26,22 +29,30 @@ elif number%10 in range(2,5):
     text = str(number) + goda
 else: text = str(number) + let
 
-excel_data = pandas.read_excel('wine3.xlsx', na_values=['', 'nan', 'NaN', 'NULL', '#N/A', '#VALUE!', '#DIV/0!', '#REF!', '#NAME?', '#NUM!'], keep_default_na=False)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Wine collection web app')
+    parser.add_argument('--excel', '-e',
+            default='wine3.xlsx',
+            help='Путь к Excel-файлу с данными о винах (по умолчанию wine3.xlsx)'
+        )
 
-excel_data = excel_data.fillna('')
-wines = excel_data.to_dict(orient='records')
+    args = parser.parse_args()
 
-wines_by_category = collections.defaultdict(list)
-for wine in wines:
-    wines_by_category[wine['Категория']].append(wine)
+    excel_data = pandas.read_excel(args.excel, na_values=['', 'nan', 'NaN', 'NULL', '#N/A', '#VALUE!', '#DIV/0!', '#REF!', '#NAME?', '#NUM!'], keep_default_na=False)
+    excel_data = excel_data.fillna('')
+    wines = excel_data.to_dict(orient='records')
 
-rendered_page = template.render(
-    year_logo = text,
-    wines_by_category = wines_by_category
-)
+    wines_by_category = collections.defaultdict(list)
+    for wine in wines:
+        wines_by_category[wine['Категория']].append(wine)
 
-with open('template.html','w',encoding='utf8') as file:
-    file.write(rendered_page)
+    rendered_page = template.render(
+        year_logo = text,
+        wines_by_category = wines_by_category
+    )
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    with open('template.html','w',encoding='utf8') as file:
+        file.write(rendered_page)
+
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
