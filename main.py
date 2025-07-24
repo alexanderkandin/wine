@@ -58,7 +58,7 @@ def main():
         wines_by_category=wines_by_category
     )
 
-    with open('template.html', 'w', encoding='utf8') as file:
+    with open('index.html', 'w', encoding='utf8') as file:
         file.write(rendered_page)
 
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)

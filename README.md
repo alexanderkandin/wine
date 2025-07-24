@@ -48,7 +48,7 @@ pandas==2.0.3
      python main.py --excel путь/к/вашему_файлу.xlsx
      ```
 
-   Сервер будет доступен по адресу: [http://localhost:8000/template.html](http://localhost:8000/template.html)
+       Сервер будет доступен по адресу: [http://localhost:8000/index.html](http://localhost:8000/index.html)
 
 5. **Остановить сервер:**
    - Нажмите `Ctrl+C` в терминале
